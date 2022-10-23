@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
@@ -29,15 +29,15 @@ jobs:
 
     - name: Cache oneMKL
       id: cache-onemkl
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: C:\Program Files (x86)\Intel\oneAPI\mkl
-        key: ${{ runner.os }}-onemkl-2022.1.0
+        key: ${{ runner.os }}-onemkl-2022.2.0
 
     - name: Setup oneMKL
       if: steps.cache-onemkl.outputs.cache-hit != 'true'
       run: |
-        curl -s -o onemkl.exe -L https://registrationcenter-download.intel.com/akdlm/IRC_NAS/18723/w_onemkl_p_2022.1.0.192_offline.exe
+        curl -s -o onemkl.exe -L https://registrationcenter-download.intel.com/akdlm/IRC_NAS/18899/w_onemkl_p_2022.2.0.9563_offline.exe
         onemkl.exe -s -a --silent --eula accept
 
     - name: Download VapourSynth headers
@@ -58,7 +58,7 @@ jobs:
     - name: Setup LLVM
       shell: bash
       run: |
-        curl -s -o llvm-win64.exe -LJO https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.4/LLVM-14.0.4-win64.exe
+        curl -s -o llvm-win64.exe -LJO https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.2/LLVM-15.0.2-win64.exe
         7z x -ollvm llvm-win64.exe
 
     - name: Configure
@@ -83,7 +83,7 @@ jobs:
         copy install\bin\wnnm.dll artifact\
 
     - name: Upload
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: wnnm-windows-x64
         path: artifact
